@@ -121,3 +121,35 @@ const submitHandler = (event) => {
 ```
 요소의 value 값에 useState의 첫번째 요소를 값으로 주면 두번째 업데이트 함수로 값을 손쉽게 제어할 수 있다.
 폼을 전송했을 때 이벤트를 중지시키기 때문에 데이터가 자동으로 없어지지 않는데, 이럴때도 빈문자열을 할당하여 손쉽게 폼의 값을 비울 수 있다.
+
+
+### 자식 컴포넌트에서 부모 컴포넌트로 데이터를 전달하는 법
+<br>
+
+<p>props를 통해 부모 컴포넌트에서 자식 컴포넌트로 데이터를 전달해왔다. 자식 컴포넌트에서 부모 컴포넌트로 데이터를 전달할 때에는 어떻게 할까?</p>
+
+<p>부모 컴포넌트에서 자식 컴포넌트로 데이터를 전달할 때 직계에게만 전달할 수 있는 것처럼 자식 컴포넌트에서 부모 컴포넌트로 전달할 때도 직계부모에게만 전달이 가능하다.</p>
+
+<p>우선 부모 컴포넌트에 함수를 선언하고 자식 컴포넌트에 해당 함수의 포인터를 props로 전달한다.</p>
+
+```javascript
+const saveExpenseDataHandler = (enteredExpenseData) => {
+    const expenseData = {
+      ...enteredExpenseData,
+      id: Math.random().toString(),
+    };
+  };
+
+return (
+  <div className="new-expense">
+    <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+  </div>
+);
+```
+<p>그리고 자식 컴포넌트에서 전달받은 함수를 호출하여 부모 컴포넌트와 소통이 가능하다. 호출 시 매개변수로 전달하고 싶은 데이터를 넣어준다.</p>
+
+```javascript
+const ExpenseForm = (props) => {
+  props.onSaveExpenseData(data);
+}
+```
